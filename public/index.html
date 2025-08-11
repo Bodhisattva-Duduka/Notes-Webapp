@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Notes</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome CDN for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <article>
+        <div class="notes">
+            <div class="notes-header">
+                <h1>Notes</h1>
+                <button>Add Note</button>
+            </div>
+            <div class="notes-collection">
+                <div class="mini-view-note" id="0">Meeting Notes</div>
+                <div class="mini-view-note" id="1">Meeting Notes</div>
+                <div class="mini-view-note" id="2">Meeting Notes</div>
+                <div class="mini-view-note" id="3">Meeting Notes</div>
+                <div class="mini-view-note" id="4">Meeting Notes</div>
+                <div class="mini-view-note" id="4">Meeting Notes</div>
+            </div>
+        </div>
+        <div class="main-note">
+            <div class="controls">
+                <button class="save"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+                <button class="edit"><i class="fa-solid fa-pen"></i> Edit</button>
+                <button class="delete"><i class="fa-solid fa-trash"></i> Delete</button>
+                <button class="close"><i class="fa-solid fa-xmark"></i> Close</button>
+            </div>
+            <div class="note">
+                <input type="text">
+                <textarea name="text-area" id="text-area"></textarea>
+            </div>
+        </div>
+    </article>
+</body>
+</html>

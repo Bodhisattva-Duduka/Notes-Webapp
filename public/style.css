@@ -1,0 +1,196 @@
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #fafbfc;
+    margin: 0;
+    padding: 0;
+}
+
+article {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 40px 0;
+}
+
+.notes {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(60,72,88,0.08);
+    padding: 32px 24px 24px 24px;
+    width: 350px;
+    margin-right: 32px;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+}
+
+.notes-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.notes-header h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0;
+    color: #222;
+}
+
+.notes-header button {
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.notes-header button:hover {
+    background: #1742a2;
+}
+
+.notes-collection {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-height: 400px; /* Set a max height for scrolling */
+    overflow-y: auto;
+    scrollbar-width: thin; /* For Firefox */
+    scrollbar-color: #747474 #f5f6fa; /* For Firefox */
+}
+
+/* For Chrome, Edge, and Safari */
+.notes-collection::-webkit-scrollbar {
+    width: 10px;
+}
+.notes-collection::-webkit-scrollbar-thumb {
+    background: #2563eb;
+    border-radius: 6px;
+}
+.notes-collection::-webkit-scrollbar-track {
+    background: #f5f6fa;
+    border-radius: 6px;
+}
+
+.mini-view-note {
+    background: #f5f6fa;
+    border-radius: 10px;
+    padding: 18px 16px;
+    font-size: 1.1rem;
+    color: #222;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(60,72,88,0.04);
+    transition: background 0.2s, box-shadow 0.2s;
+    border: 2px solid transparent;
+}
+.mini-view-note:hover,
+.mini-view-note.active {
+    background: #e0e7ff;
+    border-color: #2563eb;
+    box-shadow: 0 2px 8px rgba(60,72,88,0.08);
+}
+
+.main-note {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(60,72,88,0.08);
+    padding: 32px 28px 28px 28px;
+    width: 420px;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+}
+
+.controls {
+    display: flex;
+    gap: 12px;
+    margin-top: 4px;
+    margin-bottom: 24px;
+}
+
+.controls button {
+    background: #f5f6fa;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 18px;
+    font-size: 1rem;
+    color: #222;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+button {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.controls button.save {
+    background: #2563eb;
+    color: #fff;
+}
+.controls button.save:hover {
+    background: #1742a2;
+}
+.controls button.edit:hover {
+    background: #e0e7ff;
+}
+.controls button.delete:hover {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+.controls button.close {
+    background: #fef2f2;
+    color: #b91c1c;
+}
+.controls button.close:hover {
+    background: #f3f4f6;
+    color: #6b7280;
+}
+
+.note {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.note input[type="text"] {
+    font-size: 1.3rem;
+    font-weight: 600;
+    border: none;
+    border-bottom: 2px solid #e5e7eb;
+    outline: none;
+    padding: 8px 0;
+    margin-bottom: 8px;
+    color: #222;
+    background: transparent;
+    transition: border-color 0.2s;
+}
+.note input[type="text"]:focus {
+    border-bottom: 2px solid #2563eb;
+}
+
+.note textarea {
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1.5px solid #e5e7eb;
+    padding: 14px;
+    resize: none;
+    height: 340px;
+    outline: none;
+    color: #222;
+    background: #f9fafb;
+    transition: border-color 0.2s;
+}
+.note textarea:focus {
+    border-color: #2563eb;
+}
