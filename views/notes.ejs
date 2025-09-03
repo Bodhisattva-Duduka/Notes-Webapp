@@ -2,45 +2,88 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyNotes</title>
-    <link rel="stylesheet" href="/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyNotes - Modern Note Taking</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <article>
-        <div class="notes">
-            <div class="notes-header">
-                <h1>Notes</h1>
+  <div class="app-container">
 
-                <button class="add-note"><i class="fa-solid fa-plus"></i>Add Note</button>
-            </div>
-            <div class="notes-collection">
-                <div class="mini-view-note" data-id="0">Something here</div>
-                <div class="mini-view-note" data-id="1">Something here</div>
-                <div class="mini-view-note" data-id="2">Something here</div>
-                <div class="mini-view-note" data-id="3">Something here</div>
-                <div class="mini-view-note" data-id="4">Something here</div>
-                <div class="mini-view-note" data-id="5">Something here</div>
-            </div>
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="app-title">
+          <i class="fas fa-sticky-note"></i>
+          <h1>MyNotes</h1>
         </div>
-        <div class="main-note">
-            <div class="controls">
-                <button class="save"><i class="fa-solid fa-floppy-disk"></i> Save</button>
-                <!-- <button class="edit"><i class="fa-solid fa-pen"></i> Edit</button> -->
-                <button class="delete"><i class="fa-solid fa-trash"></i> Delete</button>
-                <button class="close"><i class="fa-solid fa-xmark"></i> Close</button>
-            </div>
-            <form id="note" class="note">
-                <input name="title" class="note-title" type="text" required placeholder="Title">
-                <textarea name="body" required class="note-body" id="text-area"
-                    placeholder="Start writing here..."></textarea>
-            </form>
+        
+        <div class="search-container">
+          <i class="fas fa-search search-icon"></i>
+          <input type="text" class="search-input" placeholder="Search notes..." id="searchInput">
         </div>
-    </article>
-    <script src="/script.js"></script>
+
+        <button class="add-note-btn" id="addNoteBtn">
+          <i class="fas fa-plus"></i>
+          <span>Create New Note</span>
+        </button>
+      </div>
+
+      <div class="notes-list" id="notesList">
+
+      </div>
+    </aside>
+
+
+    <main class="editor-container hidden" id="editorContainer">
+      <div class="editor-header">
+        <div class="editor-info">
+          <small style="color: var(--text-secondary);">Editing Note</small>
+        </div>
+        <div class="editor-controls">
+          <button class="editor-btn save" id="saveBtn">
+            <i class="fas fa-save"></i>
+            <span>Save</span>
+          </button>
+          <button class="editor-btn delete" id="deleteBtn">
+            <i class="fas fa-trash"></i>
+            <span>Delete</span>
+          </button>
+          <button class="editor-btn" id="closeBtn">
+            <i class="fas fa-times"></i>
+            <span>Close</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="editor-content">
+        <input type="text" class="note-title-input" id="noteTitle" placeholder="Note Title..." required>
+        <textarea class="note-body-input" id="noteBody" placeholder="Start writing your thoughts..." required></textarea>
+      </div>
+    </main>
+
+
+    <div class="welcome-screen" id="welcomeScreen">
+      <i class="fas fa-feather-pointed"></i>
+      <h2>Welcome to MyNotes</h2>
+      <p>Select a note from the sidebar or create a new one to get started</p>
+    </div>
+  </div>
+
+
+  <button class="fab" id="fabBtn">
+    <i class="fas fa-plus"></i>
+  </button>
+
+
+  <div class="toast" id="toast"></div>
+
+
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+  </div>
+
+<script src="script.js"></script>
 </body>
-
 </html>
