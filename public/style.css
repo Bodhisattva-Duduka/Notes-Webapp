@@ -16,7 +16,7 @@ article {
 .notes {
     background: #fff;
     border-radius: 16px;
-    box-shadow: 0 2px 8px rgba(60,72,88,0.08);
+    box-shadow: 0 2px 8px rgba(60, 72, 88, 0.08);
     padding: 32px 24px 24px 24px;
     width: 350px;
     margin-right: 32px;
@@ -50,6 +50,7 @@ article {
     cursor: pointer;
     transition: background 0.2s;
 }
+
 .notes-header button:hover {
     background: #1742a2;
 }
@@ -58,20 +59,22 @@ article {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    max-height: 400px; /* Set a max height for scrolling */
+    max-height: 400px;
     overflow-y: auto;
-    scrollbar-width: thin; /* For Firefox */
-    scrollbar-color: #747474 #f5f6fa; /* For Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: #747474 #f5f6fa;
 }
 
-/* For Chrome, Edge, and Safari */
+
 .notes-collection::-webkit-scrollbar {
     width: 10px;
 }
+
 .notes-collection::-webkit-scrollbar-thumb {
     background: #2563eb;
     border-radius: 6px;
 }
+
 .notes-collection::-webkit-scrollbar-track {
     background: #f5f6fa;
     border-radius: 6px;
@@ -84,30 +87,33 @@ article {
     font-size: 1.1rem;
     color: #222;
     cursor: pointer;
-    box-shadow: 0 1px 2px rgba(60,72,88,0.04);
+    box-shadow: 0 1px 2px rgba(60, 72, 88, 0.04);
     transition: background 0.2s, box-shadow 0.2s;
     border: 2px solid transparent;
+    font-weight: 500;
 }
+
 .mini-view-note:hover,
 .mini-view-note.active {
     background: #e0e7ff;
     border-color: #2563eb;
-    box-shadow: 0 2px 8px rgba(60,72,88,0.08);
+    box-shadow: 0 2px 8px rgba(60, 72, 88, 0.08);
 }
 
 .main-note {
     background: #fff;
     border-radius: 16px;
-    box-shadow: 0 2px 8px rgba(60,72,88,0.08);
+    box-shadow: 0 2px 8px rgba(60, 72, 88, 0.08);
     padding: 32px 28px 28px 28px;
     width: 420px;
     min-height: 500px;
-    display: flex;
+    display: none;
     flex-direction: column;
 }
 
 .controls {
     display: flex;
+    justify-content: space-between;
     gap: 12px;
     margin-top: 4px;
     margin-bottom: 24px;
@@ -125,7 +131,7 @@ article {
     transition: background 0.2s, color 0.2s;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 10px;
 }
 
 button {
@@ -138,20 +144,25 @@ button {
     background: #2563eb;
     color: #fff;
 }
+
 .controls button.save:hover {
     background: #1742a2;
 }
+
 .controls button.edit:hover {
     background: #e0e7ff;
 }
+
 .controls button.delete:hover {
     background: #fee2e2;
     color: #b91c1c;
 }
+
 .controls button.close {
     background: #fef2f2;
     color: #b91c1c;
 }
+
 .controls button.close:hover {
     background: #f3f4f6;
     color: #6b7280;
@@ -175,11 +186,13 @@ button {
     background: transparent;
     transition: border-color 0.2s;
 }
+
 .note input[type="text"]:focus {
     border-bottom: 2px solid #2563eb;
 }
 
 .note textarea {
+    font-family: 'Segoe UI', Arial, sans-serif;
     font-size: 1rem;
     border-radius: 8px;
     border: 1.5px solid #e5e7eb;
@@ -191,6 +204,7 @@ button {
     background: #f9fafb;
     transition: border-color 0.2s;
 }
+
 .note textarea:focus {
     border-color: #2563eb;
 }

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyNotes</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+
+<body>
+    <article>
+        <div class="notes">
+            <div class="notes-header">
+                <h1>Notes</h1>
+
+                <button class="add-note"><i class="fa-solid fa-plus"></i>Add Note</button>
+            </div>
+            <div class="notes-collection">
+                <div class="mini-view-note" data-id="0">Something here</div>
+                <div class="mini-view-note" data-id="1">Something here</div>
+                <div class="mini-view-note" data-id="2">Something here</div>
+                <div class="mini-view-note" data-id="3">Something here</div>
+                <div class="mini-view-note" data-id="4">Something here</div>
+                <div class="mini-view-note" data-id="5">Something here</div>
+            </div>
+        </div>
+        <div class="main-note">
+            <div class="controls">
+                <button class="save"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+                <!-- <button class="edit"><i class="fa-solid fa-pen"></i> Edit</button> -->
+                <button class="delete"><i class="fa-solid fa-trash"></i> Delete</button>
+                <button class="close"><i class="fa-solid fa-xmark"></i> Close</button>
+            </div>
+            <form id="note" class="note">
+                <input name="title" class="note-title" type="text" required placeholder="Title">
+                <textarea name="body" required class="note-body" id="text-area"
+                    placeholder="Start writing here..."></textarea>
+            </form>
+        </div>
+    </article>
+    <script src="/script.js"></script>
+</body>
+
+</html>
