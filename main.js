@@ -20,7 +20,7 @@ app.use(express.static(path.join(process.cwd(), "public")));
 app.use('/notes', notes)
 
 app.get('/', (req, res) => {
-    res.render("index", { title: "Home page" });
+    res.render("index");
 })
 
 
