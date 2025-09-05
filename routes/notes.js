@@ -107,27 +107,5 @@ router.delete('/api/delete-note', async (req, res) => {
     })
 })
 
-// function deleteHandler(req, res, next) {
-//     let dataID = req.body.id
-//     let noteID = req.body.noteIDArray
-
-//     for (let i = dataID; i < notesData.data.length; i++) {
-//         notesData.data[dataID].id = dataID - 1
-//     }
-//     notesData.data.splice(dataID, 1)
-
-//     let dataIDArray = []
-//     for (let i = 0; i < notesData.data.length; i++) {
-//         dataIDArray.push(notesData.data[i].id)
-//     }
-//     console.log(dataIDArray)
-
-//     res.json({ 'data': `${dataIDArray}` })
-// }
-
-
-// router.get('/array-length', (req, res) => {
-//     res.json({ 'length': notesData.length })
-// })
 
 module.exports = router

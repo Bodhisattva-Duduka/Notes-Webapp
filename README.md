@@ -145,4 +145,8 @@ Server runs at: 👉 [http://localhost:3000](http://localhost:5000)
 ![alt text](image-2.png)  
 
 ---
+---
 
+## 📄 License
+
+This project is licensed under the [MIT License](./LICENSE) - see the LICENSE file for details.
