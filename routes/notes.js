@@ -5,48 +5,6 @@ const notesCollection = require('../models/notesSchema')
 
 
 
-let notesData = {
-    'data':
-        [
-            {
-                'id': 0,
-                'status': 'edited',
-                'title': 'something',
-                'body': 'something'
-            },
-            {
-                'id': 1,
-                'status': 'edited',
-                'title': 'hello',
-                'body': 'something'
-            },
-            {
-                'id': 2,
-                'status': 'edited',
-                'title': 'bye',
-                'body': 'something'
-            },
-            {
-                'id': 3,
-                'status': 'edited',
-                'title': 'bodhisattva',
-                'body': 'something'
-            },
-            {
-                'id': 4,
-                'status': 'edited',
-                'title': 'content',
-                'body': 'something'
-            },
-            {
-                'id': 5,
-                'status': 'edited',
-                'title': 'Text',
-                'body': 'something'
-            }
-        ]
-}
-
 // sending data to frontend
 
 router.get('/', (req, res) => {
