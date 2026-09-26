@@ -2,53 +2,109 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        Home page
-    </title>
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="refresh" content="0; url=/notes">
+  <title>MyNotes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        h1 {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            font-size: 30px;
-            font-weight: 700;
-        }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
 
-        button {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 30px;
-            background-color: black;
-            color: white;
-        }
+    .landing-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 40px 32px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05);
+    }
 
-        button:hover {
-            background-color: rgb(35, 35, 35);
-            font-weight: 600;
-        }
-    </style>
+    .landing-icon {
+      width: 48px;
+      height: 48px;
+      background-color: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      color: #0f172a;
+      font-size: 1.25rem;
+    }
+
+    h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+
+    p {
+      font-size: 0.875rem;
+      color: #64748b;
+      margin-bottom: 24px;
+    }
+
+    .launch-btn {
+      width: 100%;
+      height: 40px;
+      border: none;
+      background-color: #0f172a;
+      color: #ffffff;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      transition: background-color 0.15s ease;
+    }
+
+    .launch-btn:hover {
+      background-color: #1e293b;
+    }
+  </style>
 </head>
 
 <body>
-    <h1>My Notes App</h1>
-    <button>Notes App</button>
-    <script>
-        const button = document.querySelector('button')
-        button.addEventListener('click', async () => {
-            window.location.href = '/notes'
-        })
-    </script>
+  <div class="landing-card">
+    <div class="landing-icon">
+      <i class="fa-regular fa-note-sticky"></i>
+    </div>
+    <h1>MyNotes</h1>
+    <p>A fast, minimalist note-taking experience.</p>
+    <a href="/notes" class="launch-btn">
+      <span>Open Notes</span>
+      <i class="fas fa-arrow-right"></i>
+    </a>
+  </div>
+  <script>
+    window.location.replace('/notes');
+  </script>
 </body>
 
 </html>

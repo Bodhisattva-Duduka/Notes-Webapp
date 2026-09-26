@@ -1,36 +1,58 @@
+// DOM Elements
 const editorContainer = document.getElementById('editorContainer');
 const welcomeScreen = document.getElementById('welcomeScreen');
 const notesList = document.getElementById('notesList');
 const searchInput = document.getElementById('searchInput');
+const searchClear = document.getElementById('searchClear');
 const addNoteBtn = document.getElementById('addNoteBtn');
 const fabBtn = document.getElementById('fabBtn');
 const saveBtn = document.getElementById('saveBtn');
 const deleteBtn = document.getElementById('deleteBtn');
 const closeBtn = document.getElementById('closeBtn');
+const backBtn = document.getElementById('backBtn');
 const noteTitle = document.getElementById('noteTitle');
 const noteBody = document.getElementById('noteBody');
 const toast = document.getElementById('toast');
 const loading = document.getElementById('loading');
+const notesCountEl = document.getElementById('notesCount');
+const wordCountEl = document.getElementById('wordCount');
+const charCountEl = document.getElementById('charCount');
+const statusTextEl = document.getElementById('statusText');
 
 // State
 let notes = [];
 let activeNoteId = null;
 let filteredNotes = [];
 const baseURL = window.location.origin;
-let isMobile = window.innerWidth <= 768;
+let isMobile = window.innerWidth <= 860;
 
 // Initialize
 init();
 
 async function init() {
+  updatePlatformShortcuts();
   await loadNotes();
   setupEventListeners();
   checkMobileView();
 }
 
-// Check if mobile view
+function updatePlatformShortcuts() {
+  const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+  const modKey = isMac ? '⌘' : 'Ctrl+';
+
+  const newShortcut = document.getElementById('newShortcut');
+  const saveShortcut = document.getElementById('saveShortcut');
+  const welcomeNew = document.getElementById('welcomeNewShortcut');
+  const welcomeSave = document.getElementById('welcomeSaveShortcut');
+
+  if (newShortcut) newShortcut.textContent = `${modKey}N`;
+  if (saveShortcut) saveShortcut.textContent = `${modKey}S`;
+  if (welcomeNew) welcomeNew.textContent = `${modKey}N`;
+  if (welcomeSave) welcomeSave.textContent = `${modKey}S`;
+}
+
 function checkMobileView() {
-  isMobile = window.innerWidth <= 768;
+  isMobile = window.innerWidth <= 860;
 }
 
 // API Functions
@@ -39,7 +61,7 @@ async function loadNotes() {
     showLoading();
     const res = await fetch(`${baseURL}/notes/api/info`);
     const data = await res.json();
-    notes = data.note || [];
+    notes = Array.isArray(data.note) ? data.note : [];
     filteredNotes = notes;
     renderNotes();
   } catch (error) {
@@ -51,8 +73,11 @@ async function loadNotes() {
 }
 
 async function saveNote() {
-  if (!noteTitle.value.trim() || !noteBody.value.trim()) {
-    showToast('Please fill in both title and content');
+  const title = noteTitle.value.trim();
+  const body = noteBody.value.trim();
+
+  if (!title && !body) {
+    showToast('Please enter a title or note content');
     return;
   }
 
@@ -60,9 +85,9 @@ async function saveNote() {
     showLoading();
     const noteData = {
       id: activeNoteId || Date.now().toString(),
-      title: noteTitle.value.trim(),
-      noteBody: noteBody.value.trim(),
-      date: new Date().toLocaleDateString() // Still saved but not displayed
+      title: title || 'Untitled note',
+      noteBody: body,
+      date: new Date().toLocaleDateString()
     };
 
     const res = await fetch(`${baseURL}/notes/api/save-note`, {
@@ -72,9 +97,16 @@ async function saveNote() {
     });
 
     if (res.ok) {
-      showToast('Note saved successfully');
+      const savedData = await res.json();
+      activeNoteId = savedData.id;
+      showToast('Note saved');
+      if (statusTextEl) statusTextEl.textContent = 'Saved';
       await loadNotes();
-      closeEditor();
+      
+      // Update active highlight
+      document.querySelectorAll('.note-card').forEach(card => {
+        card.classList.toggle('active', card.dataset.id === activeNoteId);
+      });
     } else {
       showToast('Failed to save note');
     }
@@ -100,7 +132,8 @@ async function deleteNote() {
     });
 
     if (res.ok) {
-      showToast('Note deleted successfully');
+      showToast('Note deleted');
+      activeNoteId = null;
       await loadNotes();
       closeEditor();
     } else {
@@ -116,26 +149,32 @@ async function deleteNote() {
 
 // UI Functions
 function renderNotes() {
+  if (notesCountEl) {
+    notesCountEl.textContent = `${notes.length} note${notes.length === 1 ? '' : 's'}`;
+  }
+
   if (filteredNotes.length === 0) {
+    const isSearching = searchInput && searchInput.value.trim().length > 0;
     notesList.innerHTML = `
       <div class="empty-state">
-        <i class="fas fa-inbox"></i>
-        <h3>No notes yet</h3>
-        <p>Create your first note to get started</p>
+        <i class="fa-regular ${isSearching ? 'fa-face-frown' : 'fa-clipboard'}"></i>
+        <h3>${isSearching ? 'No matching notes' : 'No notes yet'}</h3>
+        <p>${isSearching ? 'Try another search query' : 'Create your first note to get started'}</p>
       </div>
     `;
     return;
   }
 
-  // Removed date from display
   notesList.innerHTML = filteredNotes.map(note => `
-    <div class="note-card" data-id="${note.id}">
-      <div class="note-card-title">${escapeHtml(note.title)}</div>
-      <div class="note-card-preview">${escapeHtml(note.noteBody)}</div>
+    <div class="note-card ${note.id === activeNoteId ? 'active' : ''}" data-id="${note.id}">
+      <div class="note-card-header">
+        <div class="note-card-title">${escapeHtml(note.title || 'Untitled note')}</div>
+        ${note.date ? `<span class="note-card-date">${escapeHtml(note.date)}</span>` : ''}
+      </div>
+      <div class="note-card-preview">${escapeHtml(note.noteBody || 'No content')}</div>
     </div>
   `).join('');
 
-  // Add click listeners
   document.querySelectorAll('.note-card').forEach(card => {
     card.addEventListener('click', () => openNote(card.dataset.id));
   });
@@ -146,10 +185,12 @@ function openNote(noteId) {
   if (!note) return;
 
   activeNoteId = noteId;
-  noteTitle.value = note.title;
-  noteBody.value = note.noteBody;
+  noteTitle.value = note.title || '';
+  noteBody.value = note.noteBody || '';
 
-  // Update UI
+  if (statusTextEl) statusTextEl.textContent = 'Editing';
+  updateWordCount();
+
   document.querySelectorAll('.note-card').forEach(card => {
     card.classList.toggle('active', card.dataset.id === noteId);
   });
@@ -161,58 +202,76 @@ function createNewNote() {
   activeNoteId = null;
   noteTitle.value = '';
   noteBody.value = '';
-  
+
+  if (statusTextEl) statusTextEl.textContent = 'Draft';
+  updateWordCount();
+
   document.querySelectorAll('.note-card').forEach(card => {
     card.classList.remove('active');
   });
 
   showEditor();
-  
-  // Focus on title input
+
   setTimeout(() => {
     noteTitle.focus();
-  }, 300);
+  }, 100);
 }
 
 function showEditor() {
   editorContainer.classList.remove('hidden');
-  
+
   if (isMobile) {
-    // Add mobile-active class for mobile animation
     setTimeout(() => {
       editorContainer.classList.add('mobile-active');
     }, 10);
   } else {
-    welcomeScreen.style.display = 'none';
+    if (welcomeScreen) welcomeScreen.style.display = 'none';
   }
 }
 
 function closeEditor() {
   if (isMobile) {
     editorContainer.classList.remove('mobile-active');
-    // Wait for animation to complete before hiding
     setTimeout(() => {
       editorContainer.classList.add('hidden');
-    }, 300);
+    }, 250);
   } else {
     editorContainer.classList.add('hidden');
-    welcomeScreen.style.display = 'flex';
+    if (welcomeScreen) welcomeScreen.style.display = 'flex';
   }
 
   document.querySelectorAll('.note-card').forEach(card => {
     card.classList.remove('active');
   });
-  
+
   activeNoteId = null;
 }
 
 function searchNotes(query) {
-  const searchTerm = query.toLowerCase();
-  filteredNotes = notes.filter(note => 
-    note.title.toLowerCase().includes(searchTerm) ||
-    note.noteBody.toLowerCase().includes(searchTerm)
-  );
+  const searchTerm = query.toLowerCase().trim();
+
+  if (searchClear) {
+    searchClear.classList.toggle('hidden', searchTerm.length === 0);
+  }
+
+  if (!searchTerm) {
+    filteredNotes = notes;
+  } else {
+    filteredNotes = notes.filter(note =>
+      (note.title && note.title.toLowerCase().includes(searchTerm)) ||
+      (note.noteBody && note.noteBody.toLowerCase().includes(searchTerm))
+    );
+  }
   renderNotes();
+}
+
+function updateWordCount() {
+  const text = (noteBody ? noteBody.value : '') + ' ' + (noteTitle ? noteTitle.value : '');
+  const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+  const chars = (noteBody ? noteBody.value.length : 0);
+
+  if (wordCountEl) wordCountEl.textContent = `${words} word${words === 1 ? '' : 's'}`;
+  if (charCountEl) charCountEl.textContent = `${chars} char${chars === 1 ? '' : 's'}`;
 }
 
 // Utility Functions
@@ -224,108 +283,113 @@ function escapeHtml(text) {
     '"': '&quot;',
     "'": '&#039;'
   };
-  return text.replace(/[&<>"']/g, m => map[m]);
+  return String(text).replace(/[&<>"']/g, m => map[m]);
 }
 
+let toastTimer = null;
 function showToast(message) {
+  if (!toast) return;
   toast.textContent = message;
   toast.classList.add('show');
-  setTimeout(() => {
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
     toast.classList.remove('show');
-  }, 3000);
+  }, 2400);
 }
 
 function showLoading() {
-  loading.classList.add('active');
+  if (loading) loading.classList.add('active');
 }
 
 function hideLoading() {
-  loading.classList.remove('active');
+  if (loading) loading.classList.remove('active');
 }
 
 // Event Listeners
 function setupEventListeners() {
-  // Button clicks with null checks
   if (addNoteBtn) {
     addNoteBtn.addEventListener('click', createNewNote);
   }
-  
+
   if (fabBtn) {
     fabBtn.addEventListener('click', createNewNote);
   }
-  
+
   if (saveBtn) {
     saveBtn.addEventListener('click', saveNote);
   }
-  
+
   if (deleteBtn) {
     deleteBtn.addEventListener('click', deleteNote);
   }
-  
+
   if (closeBtn) {
     closeBtn.addEventListener('click', closeEditor);
   }
 
-  // Search functionality
+  if (backBtn) {
+    backBtn.addEventListener('click', closeEditor);
+  }
+
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
       searchNotes(e.target.value);
     });
   }
 
-  // Keyboard shortcuts
+  if (searchClear) {
+    searchClear.addEventListener('click', () => {
+      if (searchInput) {
+        searchInput.value = '';
+        searchNotes('');
+        searchInput.focus();
+      }
+    });
+  }
+
+  if (noteBody) {
+    noteBody.addEventListener('input', () => {
+      updateWordCount();
+      if (statusTextEl && statusTextEl.textContent === 'Saved') {
+        statusTextEl.textContent = 'Draft';
+      }
+    });
+  }
+
+  if (noteTitle) {
+    noteTitle.addEventListener('input', () => {
+      updateWordCount();
+      if (statusTextEl && statusTextEl.textContent === 'Saved') {
+        statusTextEl.textContent = 'Draft';
+      }
+    });
+  }
+
+  // Keyboard Shortcuts
   document.addEventListener('keydown', (e) => {
     if (e.ctrlKey || e.metaKey) {
-      if (e.key === 's') {
+      if (e.key === 's' || e.key === 'S') {
         e.preventDefault();
         if (!editorContainer.classList.contains('hidden')) {
           saveNote();
         }
       }
-      if (e.key === 'n') {
+      if (e.key === 'n' || e.key === 'N') {
         e.preventDefault();
         createNewNote();
       }
     }
-    
-    // ESC to close editor
+
     if (e.key === 'Escape' && !editorContainer.classList.contains('hidden')) {
       closeEditor();
     }
   });
 
-  // Auto-save draft (optional feature)
-  let saveTimeout;
-  [noteTitle, noteBody].forEach(input => {
-    if (input) {
-      input.addEventListener('input', () => {
-        clearTimeout(saveTimeout);
-        saveTimeout = setTimeout(() => {
-          if (activeNoteId && noteTitle.value && noteBody.value) {
-            // You could implement auto-save here if needed
-            console.log('Auto-save ready (not implemented)');
-          }
-        }, 2000);
-      });
-    }
-  });
-
-  // Handle window resize
+  // Window Resize
   window.addEventListener('resize', () => {
     checkMobileView();
-    
-    // Reset mobile states when switching to desktop
     if (!isMobile && editorContainer.classList.contains('mobile-active')) {
       editorContainer.classList.remove('mobile-active');
     }
   });
-
-  // Prevent scroll on mobile when editor is open
-  if (isMobile) {
-    editorContainer.addEventListener('touchmove', (e) => {
-      if (e.target === editorContainer) {
-        e.preventDefault();
-      }
-    });
-  }
 }

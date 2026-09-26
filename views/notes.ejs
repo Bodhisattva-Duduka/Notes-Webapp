@@ -3,8 +3,11 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MyNotes - Modern Note Taking</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>MyNotes - Minimalist Note Taking</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -12,78 +15,131 @@
 <body>
   <div class="app-container">
 
+    <!-- Sidebar: Notes navigation & search -->
     <aside class="sidebar">
       <div class="sidebar-header">
-        <div class="app-title">
-          <i class="fas fa-sticky-note"></i>
-          <h1>MyNotes</h1>
-        </div>
-        
-        <div class="search-container">
-          <i class="fas fa-search search-icon"></i>
-          <input type="text" class="search-input" placeholder="Search notes..." id="searchInput">
+        <div class="brand">
+          <div class="brand-icon">
+            <i class="fa-regular fa-note-sticky"></i>
+          </div>
+          <div class="brand-text">
+            <h2>MyNotes</h2>
+            <span class="notes-count" id="notesCount">0 notes</span>
+          </div>
         </div>
 
-        <button class="add-note-btn" id="addNoteBtn">
-          <i class="fas fa-plus"></i>
-          <span>Create New Note</span>
+        <div class="search-container">
+          <i class="fas fa-search search-icon"></i>
+          <input type="text" class="search-input" placeholder="Search notes..." id="searchInput" autocomplete="off" spellcheck="false">
+          <button class="search-clear hidden" id="searchClear" aria-label="Clear search" type="button">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <button class="add-note-btn" id="addNoteBtn" type="button">
+          <div>
+            <i class="fas fa-plus"></i>
+            <span>New Note</span>
+          </div>
+          <kbd class="shortcut-badge" id="newShortcut">⌘N</kbd>
         </button>
       </div>
 
       <div class="notes-list" id="notesList">
-
+        <!-- Injected via script.js -->
       </div>
     </aside>
 
-
-    <main class="editor-container hidden" id="editorContainer">
-      <div class="editor-header">
-        <div class="editor-info">
-          <small style="color: var(--text-secondary);">Editing Note</small>
+    <!-- Main Content Area: Editor and Welcome View -->
+    <div class="content-area">
+      <!-- Welcome Screen (Default empty selection) -->
+      <section class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-card">
+          <div class="welcome-icon">
+            <i class="fa-regular fa-pen-to-square"></i>
+          </div>
+          <h3>No note selected</h3>
+          <p>Select a note from the sidebar or create a new one to begin writing.</p>
+          <div class="welcome-shortcuts">
+            <div class="shortcut-item">
+              <span>Create note</span>
+              <kbd id="welcomeNewShortcut">⌘N</kbd>
+            </div>
+            <div class="shortcut-item">
+              <span>Save note</span>
+              <kbd id="welcomeSaveShortcut">⌘S</kbd>
+            </div>
+            <div class="shortcut-item">
+              <span>Close note</span>
+              <kbd>Esc</kbd>
+            </div>
+          </div>
         </div>
-        <div class="editor-controls">
-          <button class="editor-btn save" id="saveBtn">
-            <i class="fas fa-save"></i>
-            <span>Save</span>
-          </button>
-          <button class="editor-btn delete" id="deleteBtn">
-            <i class="fas fa-trash"></i>
-            <span>Delete</span>
-          </button>
-          <button class="editor-btn" id="closeBtn">
-            <i class="fas fa-times"></i>
-            <span>Close</span>
-          </button>
+      </section>
+
+      <!-- Note Editor -->
+      <main class="editor-container hidden" id="editorContainer">
+        <div class="editor-header">
+          <div class="editor-nav-left">
+            <button class="back-btn-mobile" id="backBtn" aria-label="Back to notes list" type="button">
+              <i class="fas fa-arrow-left"></i>
+              <span>Notes</span>
+            </button>
+            <div class="editor-status">
+              <span class="status-indicator"></span>
+              <span id="statusText">Ready</span>
+            </div>
+          </div>
+
+          <div class="editor-controls">
+            <button class="editor-btn delete" id="deleteBtn" title="Delete note" type="button">
+              <i class="fas fa-trash"></i>
+              <span>Delete</span>
+            </button>
+            <button class="editor-btn save" id="saveBtn" title="Save note" type="button">
+              <i class="fas fa-check"></i>
+              <span>Save</span>
+              <kbd class="shortcut-badge" id="saveShortcut">⌘S</kbd>
+            </button>
+            <button class="editor-btn close" id="closeBtn" title="Close editor (Esc)" type="button">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
         </div>
-      </div>
 
-      <div class="editor-content">
-        <input type="text" class="note-title-input" id="noteTitle" placeholder="Note Title..." required>
-        <textarea class="note-body-input" id="noteBody" placeholder="Start writing your thoughts..." required></textarea>
-      </div>
-    </main>
+        <div class="editor-content">
+          <div class="editor-title-wrap">
+            <input type="text" class="note-title-input" id="noteTitle" placeholder="Untitled note..." maxlength="120" autocomplete="off" required>
+          </div>
+          <div class="editor-textarea-wrap">
+            <textarea class="note-body-input" id="noteBody" placeholder="Start typing your note here..." required></textarea>
+          </div>
+        </div>
 
-
-    <div class="welcome-screen" id="welcomeScreen">
-      <i class="fas fa-feather-pointed"></i>
-      <h2>Welcome to MyNotes</h2>
-      <p>Select a note from the sidebar or create a new one to get started</p>
+        <div class="editor-footer">
+          <span id="wordCount">0 words</span>
+          <span class="dot-separator">•</span>
+          <span id="charCount">0 characters</span>
+        </div>
+      </main>
     </div>
+
   </div>
 
-
-  <button class="fab" id="fabBtn">
+  <!-- Mobile Floating Action Button -->
+  <button class="fab" id="fabBtn" aria-label="Create new note" type="button">
     <i class="fas fa-plus"></i>
   </button>
 
+  <!-- Clean Toast Notification -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <div class="toast" id="toast"></div>
-
-
+  <!-- Minimalist Loading Overlay -->
   <div class="loading" id="loading">
     <div class="spinner"></div>
   </div>
 
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
+
 </html>
