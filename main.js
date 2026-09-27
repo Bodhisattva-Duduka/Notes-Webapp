@@ -1,6 +1,7 @@
 const express = require('express');
 const { urlencoded } = require('express');
 const path = require('path');
+const { exec } = require('child_process');
 const notes = require('./routes/notes.js');
 const mongoose = require('mongoose');
 require('dotenv').config();
@@ -8,7 +9,6 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Connect to MongoDB safely
 let mongoUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/notes';
 if (mongoUri.endsWith('/')) {
   mongoUri += 'notes';
@@ -35,8 +35,14 @@ app.get('/', (req, res) => {
   res.redirect('/notes');
 });
 
+function openBrowser(p) {
+  const url = `http://localhost:${p}`;
+  console.log(`\n  Server running at: \x1b[36m\x1b]8;;${url}\x07${url}\x1b]8;;\x07\x1b[0m\n`);
+  exec(`xdg-open ${url}`);
+}
+
 const server = app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
+  openBrowser(port);
 });
 
 server.on('error', (err) => {
@@ -44,7 +50,7 @@ server.on('error', (err) => {
     const fallbackPort = Number(port) + 1;
     console.warn(`Port ${port} is in use, attempting port ${fallbackPort}...`);
     server.listen(fallbackPort, () => {
-      console.log(`Server listening on port ${fallbackPort}`);
+      openBrowser(fallbackPort);
     });
   } else {
     console.error('Server error:', err);

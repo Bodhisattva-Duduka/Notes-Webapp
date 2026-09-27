@@ -135,16 +135,11 @@ Server runs at: 👉 [http://localhost:3000](http://localhost:5000)
 
 ## 📸 Screenshots  
 
-### Desktop View  
-![alt text](image.png)  
+![alt text](image.png)
 
-### Mobile UI  
-![alt text](image-1.png)  
+--
+![alt text](<image copy.png>)
 
-### Note Editor  
-![alt text](image-2.png)  
-
----
 ---
 
 ## 📄 License

@@ -1,4 +1,3 @@
-// DOM Elements
 const editorContainer = document.getElementById('editorContainer');
 const welcomeScreen = document.getElementById('welcomeScreen');
 const notesList = document.getElementById('notesList');
@@ -19,14 +18,12 @@ const wordCountEl = document.getElementById('wordCount');
 const charCountEl = document.getElementById('charCount');
 const statusTextEl = document.getElementById('statusText');
 
-// State
 let notes = [];
 let activeNoteId = null;
 let filteredNotes = [];
 const baseURL = window.location.origin;
 let isMobile = window.innerWidth <= 860;
 
-// Initialize
 init();
 
 async function init() {
